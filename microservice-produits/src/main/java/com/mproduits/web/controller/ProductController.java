@@ -4,6 +4,7 @@ import com.mproduits.dao.ProductDao;
 import com.mproduits.model.Product;
 import com.mproduits.web.exceptions.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,13 +32,13 @@ public class ProductController {
 
     //Récuperer un produit par son id
     @GetMapping( value = "/Produits/{id}")
-    public Optional<Product> recupererUnProduit(@PathVariable int id) {
+    public Product recupererUnProduit(@PathVariable int id) throws ProductNotFoundException {
 
         Optional<Product> product = productDao.findById(id);
 
         if(!product.isPresent())  throw new ProductNotFoundException("Le produit correspondant à l'id " + id + " n'existe pas");
 
-        return product;
+        return product.get();
     }
 }
 

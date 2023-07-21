@@ -1,7 +1,9 @@
 package com.mpaiement.web.controller;
 
+import com.mpaiement.beans.CommandeBean;
 import com.mpaiement.dao.PaiementDao;
 import com.mpaiement.model.Paiement;
+import com.mpaiement.proxies.MicroserviceCommandesProxy;
 import com.mpaiement.web.exceptions.PaiementExistantException;
 import com.mpaiement.web.exceptions.PaiementImpossibleException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +11,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class PaiementController {
 
     @Autowired
     PaiementDao paiementDao;
+
+    @Autowired
+    private MicroserviceCommandesProxy commandesProxy;
 
     @PostMapping(value = "/paiement")
     public ResponseEntity<Paiement>  payerUneCommande(@RequestBody Paiement paiement){
@@ -32,7 +39,9 @@ public class PaiementController {
 
 
         //TODO Nous allons appeler le Microservice Commandes ici pour lui signifier que le paiement est accepté
-
+        CommandeBean commande = commandesProxy.recupererUneCommande(paiement.getIdCommande());
+        commande.setCommandePayee(true);
+        commandesProxy.updateCommande(commande);
         return new ResponseEntity<Paiement>(nouveauPaiement, HttpStatus.CREATED);
 
     }

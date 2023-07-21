@@ -29,12 +29,17 @@ public class CommandeController {
     }
 
     @GetMapping(value = "/commandes/{id}")
-    public Optional<Commande> recupererUneCommande(@PathVariable int id){
+    public Commande recupererUneCommande(@PathVariable int id){
 
         Optional<Commande> commande = commandesDao.findById(id);
 
         if(!commande.isPresent()) throw new CommandeNotFoundException("Cette commande n'existe pas");
 
-        return commande;
+        return commande.get();
+    }
+
+    @PutMapping(value = "/commandes")
+    public void updateCommande(@RequestBody Commande commande){
+        commandesDao.save(commande);
     }
 }

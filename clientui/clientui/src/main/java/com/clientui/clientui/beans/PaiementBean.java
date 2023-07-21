@@ -1,28 +1,18 @@
-package com.mpaiement.model;
+package com.clientui.clientui.beans;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity
-public class Paiement {
-
-    @Id
-    @GeneratedValue
+public class PaiementBean {
     private int id;
 
-    @Column(unique = true)
     private Integer idCommande;
 
     private double montant;
 
     private Long numeroCarte;
 
-    public Paiement() {
+    public PaiementBean() {
     }
 
-    public Paiement(int id, Integer idCommande, double montant, Long numeroCarte) {
+    public PaiementBean(int id, Integer idCommande, double montant, Long numeroCarte) {
         this.id = id;
         this.idCommande = idCommande;
         this.montant = montant;
@@ -63,7 +53,7 @@ public class Paiement {
 
     @Override
     public String toString() {
-        return "Paiement{" +
+        return "PaiementBean{" +
                 "id=" + id +
                 ", idCommande=" + idCommande +
                 ", montant=" + montant +
